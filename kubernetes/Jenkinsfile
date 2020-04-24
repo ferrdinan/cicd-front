@@ -12,7 +12,7 @@ podTemplate(label: label, containers: [
 	// 예외처리 구문
 	try {
 		// Slack - 빌드 시작시
-		notifySlack("STARTED", "#0000FF")
+		
 		// #0 Github 소스 가져오기
 		stage('Get Source') {
 			git credentialsId: 'github-lab14', url: 'https://github.com/ferdinan/cicd-front.git', branch: 'master'
