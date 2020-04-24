@@ -1,5 +1,11 @@
 def label = "worker-${UUID.randomUUID().toString()}"
 // Slack 알림
+        def notifySlack(STATUS, COLOR) {
+		slackSend channel: '#jenkins-alarm-test-lab14', message: STATUS+" : " +
+		"${env.JOB_NAME}[${env.BUILD_NUMBER}] (${env.BUILD_URL})", color: COLOR,
+		tokenCredentialId: 'slack-lab16 ', teamDomain: 'ibm-teck'
+		}
+
 podTemplate(label: label, containers: [
   containerTemplate(name: 'npm', image: 'node:lts', command: 'cat', ttyEnabled: true),
   //containerTemplate(name: 'gradle', image: 'gradle:4.5.1-jdk8', command: 'cat', ttyEnabled: true),
@@ -30,12 +36,7 @@ podTemplate(label: label, containers: [
     	def namespace = props["namespace"]
     	def sonarQubeURL = props["sonarQubeURL"]
     	def sonarQubeProject = props["sonarQubeProject"]
-        def notifySlack(STATUS, COLOR) {
-		slackSend channel: '#{{CHANNER_NAME}} ', message: STATUS+" : " +
-		"${env.JOB_NAME}[${env.BUILD_NUMBER}] (${env.BUILD_URL})", color: COLOR,
-		tokenCredentialId: '{{SLACK CREDENTIALS_ID}} ', teamDomain: '{{SLACK
-		TEAM_DOMAIN}}'
-		}
+
         // 재배포를 위한 tag를 재정의
         def timeStamp = System.currentTimeMillis()
         echo "TimeStamp: ${timeStamp}"
