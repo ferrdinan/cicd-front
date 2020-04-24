@@ -12,7 +12,7 @@ podTemplate(label: label, containers: [
 	// 예외처리 구문
 	try {
 		// Slack - 빌드 시작시
-		
+		notifySlack("STARTED", "#0000FF")
 		// #0 Github 소스 가져오기
 		stage('Get Source') {
 			git credentialsId: 'github-lab14', url: 'https://github.com/ferrdinan/cicd-front.git', branch: 'master'
@@ -30,6 +30,12 @@ podTemplate(label: label, containers: [
     	def namespace = props["namespace"]
     	def sonarQubeURL = props["sonarQubeURL"]
     	def sonarQubeProject = props["sonarQubeProject"]
+        def notifySlack(STATUS, COLOR) {
+		slackSend channel: '#{{CHANNER_NAME}} ', message: STATUS+" : " +
+		"${env.JOB_NAME}[${env.BUILD_NUMBER}] (${env.BUILD_URL})", color: COLOR,
+		tokenCredentialId: '{{SLACK CREDENTIALS_ID}} ', teamDomain: '{{SLACK
+		TEAM_DOMAIN}}'
+		}
         // 재배포를 위한 tag를 재정의
         def timeStamp = System.currentTimeMillis()
         echo "TimeStamp: ${timeStamp}"
@@ -71,8 +77,10 @@ podTemplate(label: label, containers: [
       		}
     	}
 		// Slack - 빌드 성공시
+	        notifySlack("SUCCESS", "#00FF00")
 	} catch(e) {
 		// Slack - 빌드 실패시
+	        notifySlack("FAILED", "#FF0000")
 	}
   }
 }
