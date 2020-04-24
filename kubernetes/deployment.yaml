@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend-lab14
-          image: choins/frontend-lab14
+          image: ferrdinan/frontend-lab14
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
