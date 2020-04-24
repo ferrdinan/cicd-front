@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend-lab14
-          image: ferrdinan/frontend
+          image: ferrdinan/front-service
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
